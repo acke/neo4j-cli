@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """neo4j-cli agent benchmark runner: python3 -I bench/run.py <task> <run-number> [--bin PATH --arm LABEL].
 Writes bench/results/<task>-<n>/, or bench/results/<arm>/<task>-<n>/ for a non-pinned binary."""
-import argparse, hashlib, json, os, re, shutil, subprocess, sys, time, tempfile
+import argparse, base64, hashlib, json, os, re, shutil, subprocess, sys, time, tempfile, urllib.error, urllib.parse, urllib.request
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 P = json.load(open(os.path.join(ROOT, "protocol.json")))
@@ -37,6 +37,28 @@ def aura_credentials():
     if not all(found.values()):
         sys.exit(f"{' and '.join(AURA_VARS)} must be set in the environment or in ~/.config/aura/env")
     return found
+
+
+def probe_aura():
+    """Ask the token endpoint for a token before an Aura task. The dev environment scales down and then answers 5xx,
+    which must stop the run (exit 3, nothing recorded) instead of counting as a failed task."""
+    creds = aura_credentials()
+    body = urllib.parse.urlencode({"grant_type": "client_credentials"}).encode()
+    auth = base64.b64encode(f"{creds['AURA_CLIENT_ID']}:{creds['AURA_CLIENT_SECRET']}".encode()).decode()
+    req = urllib.request.Request(AURA["auth_url"], body, {"Authorization": f"Basic {auth}", "Content-Type": "application/x-www-form-urlencoded"})
+    try:
+        urllib.request.urlopen(req, timeout=30).close()
+    except urllib.error.HTTPError as e:
+        if e.code >= 500:
+            env_down(f"the Aura dev environment is down (token endpoint answered HTTP {e.code})")
+        sys.exit(f"the Aura token endpoint rejected the credentials (HTTP {e.code}); check ~/.config/aura/env. Nothing was recorded.")
+    except OSError as e:
+        env_down(f"the Aura token endpoint is unreachable ({type(e).__name__})")
+
+
+def env_down(why):
+    print(f"{why}; scale the dev environment up and re-run. Nothing was recorded.", file=sys.stderr)
+    sys.exit(3)
 
 
 def cli(home, *args):
@@ -210,6 +232,8 @@ def check(task, home, bash, results, final):
 
 def main():
     task, n = ARGS.task, ARGS.run
+    if TASKS[task].get("aura"):
+        probe_aura()
     sha = hashlib.sha256(open(BIN, "rb").read()).hexdigest()
     out = os.path.join(ROOT, "results", *([ARGS.arm] if ARGS.arm else []), f"{task}-{n}")
     shutil.rmtree(out, ignore_errors=True)
