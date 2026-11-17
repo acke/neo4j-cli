@@ -125,7 +125,7 @@ DEPLOYMENT STRATEGY: GitHub Releases via GoReleaser, triggered by `CHANGELOG.md`
 
 ## golangci-lint
 
-- v2.11.4 (Homebrew). `.golangci.yml` needs `version: "2"`. `gofmt` is a **formatter** (`formatters.enable`), not a linter. `linters.default: none` to run only listed. CI uses `golangci-lint-action@v6` (== `make lint`).
+- CI pins v2.12.1 (`.github/workflows/test.yml`); install the same locally with `GOTOOLCHAIN=go1.26.11 go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.1`. Run `GOTOOLCHAIN=go1.26.11 make lint` (the `go.mod` toolchain): a Go newer than the one the linter was built with (Homebrew Go 1.27) breaks its export-data reader. A newer linter (v2.15.0) reports extra SA1019 findings CI does not. `.golangci.yml` needs `version: "2"`. `gofmt` is a **formatter** (`formatters.enable`), not a linter. `linters.default: none` to run only listed. CI runs the same config as `make lint`.
 - Stale-cache symptom: issues at non-existent worktree paths → `golangci-lint cache clean`.
 
 ## Distribution
