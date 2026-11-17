@@ -1,0 +1,38 @@
+{
+ "task": "T10",
+ "run": 1,
+ "status": "ok",
+ "success": true,
+ "arm": "1618-changed",
+ "binary": "/tmp/swf-compare/bins/1618-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "9e4b92e752a02669244396d53f8834c11d56c23e780709076736754c9f7b3a85",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 2779,
+ "seconds": 16.4,
+ "turns": 5,
+ "bash_calls": 4,
+ "cost_usd": 0.015862,
+ "tokens": {
+  "input_tokens": 10,
+  "output_tokens": 439,
+  "cache_read_input_tokens": 22595,
+  "cache_creation_input_tokens": 3677
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli aura instance list --format json",
+  "neo4j-cli --rw aura instance delete 6edc5255 --format json",
+  "neo4j-cli --rw aura instance delete 6edc5255 --yes --force --format json"
+ ],
+ "final": "I deleted the Aura instance `bench-t10-1`. Its instance ID was **6edc5255**.\n\nIt's a free-tier instance on GCP in europe-west1. Its status is now `destroying`, so teardown has started but may not be finished yet.\n\nIt was the only instance in your default workspace. The CLI refused to delete without confirmation, so I re-ran the command with `--yes --force`."
+}

@@ -1,0 +1,38 @@
+{
+ "task": "T8",
+ "run": 3,
+ "status": "ok",
+ "success": true,
+ "arm": "1618-changed",
+ "binary": "/tmp/swf-compare/bins/1618-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "9e4b92e752a02669244396d53f8834c11d56c23e780709076736754c9f7b3a85",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 5654,
+ "seconds": 10.4,
+ "turns": 5,
+ "bash_calls": 4,
+ "cost_usd": 0.01632,
+ "tokens": {
+  "input_tokens": 10,
+  "output_tokens": 268,
+  "cache_read_input_tokens": 23825,
+  "cache_creation_input_tokens": 4495
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli aura --help",
+  "neo4j-cli aura workspace --help; neo4j-cli aura project --help",
+  "neo4j-cli aura workspace list --format toon; neo4j-cli aura project list --format toon"
+ ],
+ "final": "New project"
+}

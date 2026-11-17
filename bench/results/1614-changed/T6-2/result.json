@@ -1,0 +1,39 @@
+{
+ "task": "T6",
+ "run": 2,
+ "status": "ok",
+ "success": true,
+ "arm": "1614-changed",
+ "binary": "/tmp/swf-compare/bins/1614-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "d0ae07519fcc69bac7f639b31e6cb64a426fa545c5ad2747a5137b574da99465",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 4166,
+ "seconds": 11.7,
+ "turns": 6,
+ "bash_calls": 5,
+ "cost_usd": 0.0172862,
+ "tokens": {
+  "input_tokens": 12,
+  "output_tokens": 407,
+  "cache_read_input_tokens": 29072,
+  "cache_creation_input_tokens": 4114
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli history --help",
+  "neo4j-cli history list --help",
+  "neo4j-cli history list --limit 5 --format json",
+  "neo4j-cli history list --limit 5 --format json | jq -c '[.[].command]'"
+ ],
+ "final": "[\"neo4j-cli config list\",\"neo4j-cli agent-context\",\"neo4j-cli skill list\",\"neo4j-cli credential dbms list\",\"neo4j-cli config get format\"]"
+}

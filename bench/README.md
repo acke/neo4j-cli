@@ -14,7 +14,7 @@ Each run writes `stream.jsonl` (full transcript) and `result.json` (success, tok
 
 ## Comparing two builds
 
-Run the same task set with `--bin` and `--arm` once per build, for example `parent` and `changed`, then `report.py`. Only `--bin` changes between arms. A build wins only on a material drop in `tool_output_bytes` with the success rate held. A cheaper arm that answers wrong loses. Any other change is a non-win and is reported as one. This is the decision rule of relate's `relate-agentbench`.
+Run the same task set with `--bin` and `--arm` once per build, for example `parent` and `changed`, then `report.py`. Only `--bin` changes between arms. A build wins only on a material drop in `tool_output_bytes` with the success rate held. A cheaper arm that answers wrong loses. Any other change is a non-win and is reported as one. This is the decision rule of relate's `relate-agentbench`. The first card comparisons are in `results/card-comparison.md`.
 
 ## Isolation
 

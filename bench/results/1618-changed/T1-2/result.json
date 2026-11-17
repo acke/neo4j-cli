@@ -1,0 +1,37 @@
+{
+ "task": "T1",
+ "run": 2,
+ "status": "ok",
+ "success": true,
+ "arm": "1618-changed",
+ "binary": "/tmp/swf-compare/bins/1618-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "9e4b92e752a02669244396d53f8834c11d56c23e780709076736754c9f7b3a85",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 2954,
+ "seconds": 12.4,
+ "turns": 4,
+ "bash_calls": 3,
+ "cost_usd": 0.012905,
+ "tokens": {
+  "input_tokens": 8,
+  "output_tokens": 267,
+  "cache_read_input_tokens": 17265,
+  "cache_creation_input_tokens": 3397
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli credential --help",
+  "neo4j-cli credential dbms list --format toon"
+ ],
+ "final": "There is one stored DBMS credential, named **`bench-db`**.\n\n- URI: `neo4j://localhost:7687`\n- Username: `neo4j`\n- Database: `neo4j`\n- Default: yes\n\nI found it with `neo4j-cli credential dbms list`."
+}

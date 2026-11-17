@@ -1,0 +1,38 @@
+{
+ "task": "T4",
+ "run": 3,
+ "status": "ok",
+ "success": true,
+ "arm": "1618-parent",
+ "binary": "/tmp/swf-compare/bins/1618-parent",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "29f210830e4491ae7673871357399b67cc4429f5d981f6cc45679c4d55715798",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 6963,
+ "seconds": 11.8,
+ "turns": 5,
+ "bash_calls": 4,
+ "cost_usd": 0.0217481,
+ "tokens": {
+  "input_tokens": 10,
+  "output_tokens": 630,
+  "cache_read_input_tokens": 24131,
+  "cache_creation_input_tokens": 5206
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli skill --help; neo4j-cli skill install --help",
+  "neo4j-cli skill install --agent claude-code --format json --rw",
+  "neo4j-cli skill list --format json"
+ ],
+ "final": "I installed the `neo4j-cli` skill for Claude Code only, using `neo4j-cli skill install --agent claude-code --rw`.\n\nThe install command reported one skill directory:\n\n`/var/folders/d1/549jj01d05l_4w_bj97034c00000gp/T/swf-T4-b_1g0l9d/home/.claude/skills/neo4j-cli`\n\nThe command only reports the directory, not the files inside it, and my shell can't list directories. I can't give you a file-by-file list. The bundle should contain a `SKILL.md`, which `neo4j-cli skill print` can show.\n\n`neo4j-cli skill list` shows `neo4j-cli` (the embedded skill) as installed for `claude-code` at version `dev`. It shows `not-installed` for the other agents I checked, including cursor, windsurf and copilot. I didn't read the rest of the output.\n\nI didn't install any of the curated catalog skills, such as `neo4j-cypher-skill`. I can add those if you want them."
+}

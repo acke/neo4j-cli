@@ -1,0 +1,38 @@
+{
+ "task": "T4",
+ "run": 3,
+ "status": "ok",
+ "success": true,
+ "arm": "1614-changed",
+ "binary": "/tmp/swf-compare/bins/1614-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "d0ae07519fcc69bac7f639b31e6cb64a426fa545c5ad2747a5137b574da99465",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 6963,
+ "seconds": 11.9,
+ "turns": 5,
+ "bash_calls": 4,
+ "cost_usd": 0.021687599999999998,
+ "tokens": {
+  "input_tokens": 10,
+  "output_tokens": 635,
+  "cache_read_input_tokens": 24101,
+  "cache_creation_input_tokens": 5163
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli skill --help; neo4j-cli skill install --help",
+  "neo4j-cli skill install --agent claude-code --rw --format json",
+  "neo4j-cli skill list --format json"
+ ],
+ "final": "I installed the `neo4j-cli` skill for Claude Code only. I used `neo4j-cli skill install --agent claude-code --rw`, which reported `installed`.\n\n- **Location:** `/var/folders/d1/549jj01d05l_4w_bj97034c00000gp/T/swf-T4-piluerx2/home/.claude/skills/neo4j-cli`\n- **Version:** `dev`, which matches the available version.\n- **Other agents:** `skill list` shows `neo4j-cli` as installed for Claude Code and not installed for the others I checked, such as Cursor, Windsurf and Copilot. I only read the first part of that list.\n\nI can't tell you the individual files. The install command only reports the skill directory, and my shell is limited to `neo4j-cli`, `head`, `tail`, `jq` and `wc`, so I couldn't list what's inside it. The bundle's main file should be `SKILL.md`, but I haven't confirmed that. `neo4j-cli skill print` would show its contents."
+}
