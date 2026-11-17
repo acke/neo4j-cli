@@ -113,6 +113,23 @@ Otherwise:
 - If the branch carries reusable progress, keep the branch and PR open and say so on the card. Otherwise close the PR and delete the branch.
 - Notify the human in the invoking session. The handback ends the run.
 
+### Card record (every terminal state, before cleanup)
+
+Post one comment on the card holding a fenced JSON block, schema `swf-card-record/1`. Collect it before cleanup, because cleanup deletes the worktree and scratch dirs. Write `unavailable` for anything you could not read, never `0`. Never guess.
+
+- `schema`, `card`, `outcome` (`merged`, `carve-out`, `handed_back`), `pr`, `pr_head`, `merge_commit`.
+- `session_id`: this session's ID. One fresh session per card.
+- `timestamps_utc`: `card_created`, `agent_backlog_at`, `pr_opened`, `review_workflows_started`, `merged`.
+- `throughput_minutes`: `active`, `human_wait` (the ready-flip wait and any other wait on the human), `created_to_merged`.
+- `cost`: tokens, tool calls and seconds per phase (implementation, draft rounds, ready rounds, reviews), failed attempts, and `dollars_computed` with `price_basis` (`API list price`). Read these from the session transcript.
+- `human_interventions`: `sanctioned_gates` (the ready flip), `phase_approvals`, `unplanned`, and `raw` (`manual_commits`, `human_review_comments`, `review_rounds`).
+- `first_push_ci`: per-workflow results on the first pushed head, plus `baseline`, the checks already red on `fork/main` that day.
+- `review_findings.by_severity`: counts per bot on the scale blocker, critical, high, medium, low, nit, plus how many were deferred.
+- `quality`: `reverted` and `followup_fix_cards`, both `unavailable until the final go/no-go`.
+- `portability`: a list of what had to change from the card's instructions or this skill to run it.
+
+Re-read the comment after posting to confirm it landed and parses as JSON.
+
 ### Cleanup (every terminal state)
 
 Remove the worktree (`git worktree remove`), delete the branch locally and on `fork` unless the handback kept it (tolerate already-gone), then `git worktree prune` and `git fetch --prune`. Drop any scratch dirs the run created. The main checkout ends the run exactly as it started.
@@ -123,4 +140,4 @@ Remove the worktree (`git worktree remove`), delete the branch locally and on `f
 2. Branch from `fork/main`, push to `fork`, PR into `acke/neo4j-cli:main`. Never upstream.
 3. 5 rounds per phase, then stop. Waiting is not a round. Only current-head verdicts count.
 4. The human flips ready. The agent merges by hand, never with auto-merge, and never a carve-out diff.
-5. Every terminal state (merged, handed back, nothing to pick) is recorded on the Linear card, verified by re-reading it, and leaves a clean local workspace.
+5. Every terminal state (merged, handed back, nothing to pick) is recorded on the Linear card, verified by re-reading it, carries a `swf-card-record/1` comment written before cleanup, and leaves a clean local workspace.
