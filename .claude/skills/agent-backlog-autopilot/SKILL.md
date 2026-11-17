@@ -38,7 +38,9 @@ Scope: team `DEVSURF`, project `P-DEVSURF-2322`, state `Agent Backlog`. Order by
   - An earlier give-up remnant (branch or PR) belongs to the human to resolve. Don't adopt it.
 - **Not busy elsewhere.** Its files are not touched by an open human PR on either repo.
 
-If nothing qualifies, stop and say so. Never manufacture work.
+Judge a card against `fork/main`, never the local checkout, which can be behind. Run `git fetch fork` first, and read code with `git show fork/main:<path>` or `git grep <pattern> fork/main`. A scope claim such as "flag X does not exist" is only valid when checked there.
+
+If nothing qualifies, stop and say so. Never manufacture work. When a card the operator named is rejected here, comment the reason on it and post the card record with `outcome: nothing_to_pick`. Leave the card's state and assignee alone.
 
 ## Step 2 — claim it
 
@@ -109,7 +111,7 @@ Otherwise:
 
 - Don't merge, don't flip ready back to draft, and don't open another round.
 - Commit and push anything uncommitted first, so the PR shows the real state.
-- Comment on the card: what was done, what remains, the exact blocker, links. Unassign it and move it back to `Agent Backlog` so it can be picked again.
+- Comment on the card: what was done, what remains, the exact blocker, links. Unassign it and move it back to the state it was picked from (`Agent Backlog`, or `Backlog` while that state doesn't exist) so it can be picked again. A card that was never claimed stays as it is.
 - If the branch carries reusable progress, keep the branch and PR open and say so on the card. Otherwise close the PR and delete the branch.
 - Notify the human in the invoking session. The handback ends the run.
 
@@ -117,7 +119,7 @@ Otherwise:
 
 Post one comment on the card holding a fenced JSON block, schema `swf-card-record/1`. Collect it before cleanup, because cleanup deletes the worktree and scratch dirs. Write `unavailable` for anything you could not read, never `0`. Never guess.
 
-- `schema`, `card`, `outcome` (`merged`, `carve-out`, `handed_back`), `pr`, `pr_head`, `merge_commit`.
+- `schema`, `card`, `outcome` (`merged`, `carve-out`, `handed_back`, `nothing_to_pick`), `pr`, `pr_head`, `merge_commit`.
 - `session_id`: this session's ID. One fresh session per card.
 - `timestamps_utc`: `card_created`, `agent_backlog_at`, `pr_opened`, `review_workflows_started`, `merged`.
 - `throughput_minutes`: `active`, `human_wait` (the ready-flip wait and any other wait on the human), `created_to_merged`.
