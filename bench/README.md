@@ -8,6 +8,7 @@ python3 -I bench/run.py <task> <run> --bin PATH --arm LABEL   # same task on ano
 python3 -I bench/run.py <task> <run> --model NAME             # same task on another model, writes bench/results/<model-slug>/<task>-<run>/
 python3 -I bench/report.py                                    # one row per arm, model and task, p25/median/p75, plus per-(model, arm) totals
 python3 -I bench/score.py [--force] [--task T1]               # LLM-as-judge scores per run (see below)
+python3 -I bench/card_cost.py <session_id> [--split NAME=ISO] # cost block of a card record from a session transcript; dollars are a floor
 ```
 
 Each run writes `stream.jsonl` (full transcript) and `result.json` (success, model, tokens, turns, commands, cost, `tool_output_bytes`, binary version and SHA-256).

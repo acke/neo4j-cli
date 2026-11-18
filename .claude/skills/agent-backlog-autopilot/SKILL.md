@@ -123,7 +123,7 @@ Post one comment on the card holding a fenced JSON block, schema `swf-card-recor
 - `session_id`: this session's ID. One fresh session per card.
 - `timestamps_utc`: `card_created`, `agent_backlog_at`, `pr_opened`, `review_workflows_started`, `merged`.
 - `throughput_minutes`: `active`, `human_wait` (the ready-flip wait and any other wait on the human), `created_to_merged`.
-- `cost`: tokens, tool calls and seconds per phase (implementation, draft rounds, ready rounds, reviews), failed attempts, and `dollars_computed` with `price_basis` (`API list price`). Read these from the session transcript.
+- `cost`: tokens, tool calls and seconds per phase (implementation, draft rounds, ready rounds, reviews), failed attempts, and `dollars_computed` with `price_basis` (`API list price`). Run `python3 -I bench/card_cost.py <session_id> --split <phase>=<ISO UTC>` (one `--split` per phase start) and paste its numbers; don't hand-compute. Output tokens and dollars are a floor, because transcripts store a streaming snapshot of output tokens; keep `output_tokens_lower_bound` in the block. Subagent usage counts only when their transcripts sit under the session; the output says how many it found.
 - `human_interventions`: `sanctioned_gates` (the ready flip), `phase_approvals`, `unplanned`, and `raw` (`manual_commits`, `human_review_comments`, `review_rounds`).
 - `first_push_ci`: per-workflow results on the first pushed head, plus `baseline`, the checks already red on `fork/main` that day.
 - `review_findings.by_severity`: counts per bot on the scale blocker, critical, high, medium, low, nit, plus how many were deferred.
