@@ -3,7 +3,7 @@
 Agent benchmark for `neo4j-cli`. Each task gives a headless Claude Code session a prompt and checks the outcome with code. The protocol is frozen in `protocol.json`; change it and the old results stop being comparable.
 
 ```
-python3 -I bench/run.py <task> <run>                          # T1..T10, writes bench/results/<task>-<run>/
+python3 -I bench/run.py <task> <run>                          # T1..T11, writes bench/results/<task>-<run>/
 python3 -I bench/run.py <task> <run> --bin PATH --arm LABEL   # same task on another build, writes bench/results/<arm>/<task>-<run>/
 python3 -I bench/report.py                                    # one row per arm and task, p25/median/p75
 ```
@@ -38,6 +38,7 @@ Run the same task set with `--bin` and `--arm` once per build, for example `pare
 | T8 | find the project name of the default Aura workspace | answer is `New project`, the agent ran `neo4j-cli aura ...` |
 | T9 | create a free Aura instance `bench-t9-<run>`, wait until running, report its ID | the instance exists, is running and its ID is in the answer |
 | T10 | delete the Aura instance `bench-t10-<run>` (the setup creates it), report its ID | the instance is gone or destroying and its real ID is in the answer |
+| T11 | list the stored DBMS credentials as JSON Lines (the setup seeds three) | one JSON object per line, exactly the seeded `bench-alpha`, `bench-beta`, `bench-gamma` with their seeded `uri`, and the agent ran `credential dbms list` |
 
 T7 needs Docker running and `docker pull neo4j:community` done first. T8 to T10 run against the Aura dev environment frozen in `protocol.json` and need `AURA_CLIENT_ID` and `AURA_CLIENT_SECRET` in the environment or in `~/.config/aura/env`. The runner deletes every `bench-*` instance before and after a run, because the workspace holds one free instance at a time, so run these tasks one at a time. Before an Aura task the runner asks the token endpoint for a token. The dev environment scales down after about 4 hours and then answers HTTP 5xx, so a failed probe exits 3 with a message and records nothing, and the run does not count as a failed task. Rejected credentials exit 1. Scale the environment up and re-run. Free instances cannot be paused, so there is no pause task. Run the harness outside the Claude Code sandbox: inside it the agent's shell drops the PATH wrapper and the CLI runs with the wrong HOME.
 

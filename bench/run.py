@@ -22,6 +22,7 @@ TASKS = {t["id"]: t for t in json.load(open(os.path.join(ROOT, "tasks.json")))}
 
 AURA = H["aura"]
 T10 = {}  # id of the instance the T10 setup creates
+T11_CREDS = {"bench-alpha": "neo4j://alpha.bench:7687", "bench-beta": "neo4j://beta.bench:7688", "bench-gamma": "neo4j://gamma.bench:7689"}
 AURA_VARS = ("AURA_CLIENT_ID", "AURA_CLIENT_SECRET")
 
 
@@ -109,6 +110,9 @@ def setup(task, home):
     if task == "T1":
         cli(home, "credential", "dbms", "add", "--name", "bench-db", "--uri", "neo4j://localhost:7687",
             "--username", "neo4j", "--password", "bench-pass", "--rw")
+    if task == "T11":
+        for name, uri in T11_CREDS.items():
+            cli(home, "credential", "dbms", "add", "--name", name, "--uri", uri, "--username", "neo4j", "--password", "bench-pass", "--rw")
     if task == "T10":
         r = cli(home, "aura", "instance", "create", "--type", "free", "--name", f"bench-t10-{ARGS.run}", "--wait",
                 "--no-credential-print", "--no-credential-storage", "--rw")
@@ -189,6 +193,18 @@ def check_t6(home, bash, final):
     return isinstance(arr, list) and len(arr) == 5 and all(isinstance(x, str) and x.startswith("neo4j-cli") for x in arr)
 
 
+def check_t11(home, bash, final):
+    """One JSON object per line, one line per seeded credential, each with the seeded name and uri."""
+    lines = [l.strip() for l in final.strip().splitlines() if l.strip() and not l.strip().startswith("```")]
+    try:
+        recs = [json.loads(l) for l in lines]
+    except ValueError:
+        return False
+    if not all(isinstance(r, dict) for r in recs):
+        return False
+    return {r.get("name"): r.get("uri") for r in recs} == T11_CREDS and len(recs) == len(T11_CREDS)
+
+
 def check_t7(home, bash, final):
     return not managed_containers()
 
@@ -218,7 +234,7 @@ def check_t10(home, bash, final):
 
 
 STATE_CHECKS = {"T2": check_t2, "T3": check_t3, "T4": check_t4, "T5": check_t5, "T6": check_t6, "T7": check_t7,
-                "T9": check_t9, "T10": check_t10}
+                "T9": check_t9, "T10": check_t10, "T11": check_t11}
 
 
 def check(task, home, bash, results, final):
