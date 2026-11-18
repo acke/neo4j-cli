@@ -26,6 +26,7 @@ TASKS = {t["id"]: t for t in json.load(open(os.path.join(ROOT, "tasks.json")))}
 
 AURA = H["aura"]
 T10 = {}  # id of the instance the T10 setup creates
+T13 = {}  # id of the instance the T13 setup creates
 T11_CREDS = {"bench-alpha": "neo4j://alpha.bench:7687", "bench-beta": "neo4j://beta.bench:7688", "bench-gamma": "neo4j://gamma.bench:7689"}
 AURA_VARS = ("AURA_CLIENT_ID", "AURA_CLIENT_SECRET")
 
@@ -123,6 +124,12 @@ def setup(task, home):
         if r.returncode:
             sys.exit(f"could not create the T10 instance: {r.stderr.strip()[:300]}")
         T10["id"] = named_instance(home, f"bench-t10-{ARGS.run}")["id"]
+    if task == "T13":
+        r = cli(home, "aura", "instance", "create", "--type", "free", "--name", f"bench-t13-{ARGS.run}", "--wait",
+                "--no-credential-print", "--no-credential-storage", "--rw")
+        if r.returncode:
+            sys.exit(f"could not create the T13 instance: {r.stderr.strip()[:300]}")
+        T13["id"] = named_instance(home, f"bench-t13-{ARGS.run}")["id"]
     if task == "T4":
         os.makedirs(os.path.join(home, ".claude"), exist_ok=True)
     if task == "T6":
@@ -237,8 +244,14 @@ def check_t10(home, bash, final):
     return gone and has_word(final, T10["id"])
 
 
+def check_t13(home, bash, final):
+    i = named_instance(home, f"bench-t13-{ARGS.run}")
+    alive = bool(i) and instance_status(home, i["id"]) not in (None, "destroying")
+    return alive and has_word(final, T13["id"])
+
+
 STATE_CHECKS = {"T2": check_t2, "T3": check_t3, "T4": check_t4, "T5": check_t5, "T6": check_t6, "T7": check_t7,
-                "T9": check_t9, "T10": check_t10, "T11": check_t11}
+                "T9": check_t9, "T10": check_t10, "T11": check_t11, "T13": check_t13}
 
 
 def check(task, home, bash, results, final):
