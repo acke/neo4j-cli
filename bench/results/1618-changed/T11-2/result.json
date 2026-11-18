@@ -1,0 +1,37 @@
+{
+ "task": "T11",
+ "run": 2,
+ "status": "ok",
+ "success": true,
+ "arm": "1618-changed",
+ "binary": "/tmp/swf-t11/1618-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "572d8596b22b03e7476f5cfb69a06986422e93e3e11e35ee2573ce8d32ee282a",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 3242,
+ "seconds": 8.9,
+ "turns": 4,
+ "bash_calls": 3,
+ "cost_usd": 0.014346999999999999,
+ "tokens": {
+  "input_tokens": 8,
+  "output_tokens": 368,
+  "cache_read_input_tokens": 17360,
+  "cache_creation_input_tokens": 3566
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli credential --help",
+  "neo4j-cli credential dbms list --format jsonl"
+ ],
+ "final": "{\"database_name\":\"neo4j\",\"default\":true,\"embed_credential\":\"\",\"name\":\"bench-alpha\",\"uri\":\"neo4j://alpha.bench:7687\",\"username\":\"neo4j\"}\n{\"database_name\":\"neo4j\",\"default\":false,\"embed_credential\":\"\",\"name\":\"bench-beta\",\"uri\":\"neo4j://beta.bench:7688\",\"username\":\"neo4j\"}\n{\"database_name\":\"neo4j\",\"default\":false,\"embed_credential\":\"\",\"name\":\"bench-gamma\",\"uri\":\"neo4j://gamma.bench:7689\",\"username\":\"neo4j\"}"
+}

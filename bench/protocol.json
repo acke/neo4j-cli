@@ -1,5 +1,5 @@
 {
-  "protocol": "swf-bench-protocol/2",
+  "protocol": "swf-bench-protocol/3",
   "frozen": true,
   "pins": {
     "neo4j_cli": {
@@ -43,16 +43,17 @@
     "T7",
     "T8",
     "T9",
-    "T10"
+    "T10",
+    "T11"
   ],
-  "frozen_on": "2026-11-17",
+  "frozen_on": "2026-11-18",
   "limits": {
     "seconds_per_run": 600,
     "usd_per_run": 2
   },
   "billing": "ANTHROPIC_API_KEY (API billing); cost_usd in results is the reported total_cost_usd",
   "notes": [
-    "T1-T7 frozen. T8-T10 need an Aura key.",
+    "T1-T7 frozen. T8-T10 need an Aura key. T1-T10 were frozen on 2026-11-17 and are unchanged under /3, so /2 results stay comparable. T11 was added on 2026-11-18.",
     "Success checks: expectedAnswer and mustRun in tasks.json, state checks in run.py.",
     "Fixtures use credential-storage insecure under a throwaway HOME.",
     "T7 needs Docker running and the neo4j:community image pulled beforehand (pull time is not part of the run).",

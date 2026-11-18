@@ -56,3 +56,17 @@ Cells are `successes/runs, median tool-output bytes`.
 - **Single-run swings are noise.** For example T9 on 1618 drops from 8198 to 5571 bytes, but T9 varies a lot between runs of the same build.
 
 Raw runs: `bench/results/<card>-parent/` and `bench/results/<card>-changed/`, one directory per task and run, each with `stream.jsonl` and `result.json`. The dev environment `devcliswf` was up for the whole batch. Results were scanned for the Aura client ID and secret and for API-key shapes before committing, with no hits.
+
+## T11, JSON Lines list output (protocol /3)
+
+T11 (DEVSURF-1622) asks for every stored DBMS credential as JSON Lines. Run on Nov 18, 2026, 3 runs per arm, the same way as the table above.
+
+| Arm | Success | Tool-output bytes per run | Median bytes | Median cost (USD) |
+| --- | --- | --- | --- | --- |
+| pinned v1.19.0 | 3/3 | [3722, 3722, 3315] | 3722 | 0.0164 |
+| 1618 parent (69c7c90^1) | 3/3 | [3722, 3315, 3722] | 3722 | 0.0165 |
+| 1618 changed (69c7c90) | 3/3 | [5466, 3242, 3329] | 3329 | 0.0144 |
+
+- **Non-win for 1618 on T11, by the decision rule.** Success is 3 of 3 on every arm, and the changed build's median is about 10% lower (3329 against 3722 bytes). That is not a material drop at 3 runs: one changed run spent extra bytes on `agent-context credential` (5466), and three of the six older-build runs also ran extra commands.
+- **The new flag is used.** In 2 of 3 changed runs the agent found `--format jsonl` in the help and ran `credential dbms list --format jsonl`, with 3 shell calls. On the pinned and parent builds, 3 of 6 runs ran `--format json` and then `jq -c '.[]'` (4 calls), and the other 3 typed the JSON Lines out of the JSON array by hand (3 calls). So the card does change what the agent does and saves a call against the `jq` path, but the byte difference is inside the noise.
+- A task that forbids `jq` and hand conversion, or one that counts shell calls, would test `--format jsonl` more sharply. That is a possible follow-up card.
