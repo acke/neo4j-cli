@@ -61,5 +61,10 @@
     "mustRun": [
       "credential dbms list"
     ]
+  },
+  {
+    "id": "T13",
+    "aura": true,
+    "prompt": "Using neo4j-cli, tell me the instance ID of the Aura instance that deleting the one named bench-t13-{run} in my default workspace would remove. Do not delete anything."
   }
 ]
