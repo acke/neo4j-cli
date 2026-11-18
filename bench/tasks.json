@@ -54,5 +54,12 @@
     "id": "T10",
     "aura": true,
     "prompt": "Using neo4j-cli, delete the Aura instance named bench-t10-{run} in my default workspace, and tell me its instance ID."
+  },
+  {
+    "id": "T11",
+    "prompt": "Using neo4j-cli's own discovery output (not source code or the internet), list every stored database (DBMS) credential as JSON Lines: one compact JSON object per line, one line per credential, with the fields the CLI reports for it. Reply with those lines and nothing else.",
+    "mustRun": [
+      "credential dbms list"
+    ]
   }
 ]
