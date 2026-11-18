@@ -1,0 +1,38 @@
+{
+ "task": "T4",
+ "run": 3,
+ "status": "ok",
+ "success": true,
+ "arm": "1616-parent",
+ "binary": "/tmp/swf-compare/bins/1616-parent",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "60bdeee216969b2eafb79fc1ae50a979ddedf19454ed8b75be3e3634339da9d9",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 6963,
+ "seconds": 12.3,
+ "turns": 5,
+ "bash_calls": 4,
+ "cost_usd": 0.0221358,
+ "tokens": {
+  "input_tokens": 10,
+  "output_tokens": 672,
+  "cache_read_input_tokens": 24108,
+  "cache_creation_input_tokens": 5194
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli skill --help; neo4j-cli skill install --help",
+  "neo4j-cli skill install --agent claude-code --rw --format json",
+  "neo4j-cli skill list --format json"
+ ],
+ "final": "I installed the `neo4j-cli` skill for Claude Code only. I couldn't list the individual files it contains.\n\nThe install ran `neo4j-cli skill install --agent claude-code --rw` and reported `\"action\": \"installed\"`. The skill went to `/var/folders/d1/549jj01d05l_4w_bj97034c00000gp/T/swf-T4-opoo_a21/home/.claude/skills/neo4j-cli`.\n\n`neo4j-cli skill list` shows `neo4j-cli` (embedded source, version `dev`) as installed for `claude-code`, and not installed for the other agents I checked. The list output was large and I only read the start of it, so I didn't check every agent.\n\nThe install output names only the skill directory, not the files inside it, and this shell only allows `neo4j-cli`, `head`, `tail`, `jq` and `wc`. I can't list the directory. The skill should include a `SKILL.md`, and `neo4j-cli skill print` would show its contents, but I haven't confirmed which files are there."
+}

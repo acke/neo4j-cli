@@ -1,0 +1,38 @@
+{
+ "task": "T1",
+ "run": 3,
+ "status": "ok",
+ "success": true,
+ "arm": "1618-changed",
+ "binary": "/tmp/swf-compare/bins/1618-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "9e4b92e752a02669244396d53f8834c11d56c23e780709076736754c9f7b3a85",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 3976,
+ "seconds": 10.6,
+ "turns": 5,
+ "bash_calls": 4,
+ "cost_usd": 0.0156622,
+ "tokens": {
+  "input_tokens": 10,
+  "output_tokens": 367,
+  "cache_read_input_tokens": 23272,
+  "cache_creation_input_tokens": 3858
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli credential --help",
+  "neo4j-cli credential dbms --help",
+  "neo4j-cli credential dbms list --format toon"
+ ],
+ "final": "There is one stored DBMS credential, named **bench-db**.\n\nI found it with `neo4j-cli credential dbms list`. Its details:\n- **URI:** `neo4j://localhost:7687`\n- **Username:** `neo4j`\n- **Database:** `neo4j`\n- **Default:** yes, so `query` uses it when no other connection is given.\n- **Embed credential:** none linked."
+}

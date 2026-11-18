@@ -1,0 +1,36 @@
+{
+ "task": "T9",
+ "run": 2,
+ "status": "ok",
+ "success": true,
+ "arm": "1616-changed",
+ "binary": "/tmp/swf-compare/bins/1616-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "8f2563cb213f0a6f9d34f31ff665b2630c16d75024abab315d4f1eb326f96bcd",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 5564,
+ "seconds": 124.9,
+ "turns": 3,
+ "bash_calls": 2,
+ "cost_usd": 0.0154383,
+ "tokens": {
+  "input_tokens": 6,
+  "output_tokens": 347,
+  "cache_read_input_tokens": 12838,
+  "cache_creation_input_tokens": 4269
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli aura instance create --help",
+  "neo4j-cli aura instance create --rw --name bench-t9-2 --type free --wait --no-credential-print --no-credential-storage --format json"
+ ],
+ "final": "The free Aura instance `bench-t9-2` is created and running. Its instance ID is **d7eece73**.\n\nIt was created in your default workspace (project `a63be88d-0d38-4054-ae5b-0e55f1483ea3`) on GCP in europe-west1, with 1GB memory and 2GB storage.\n\nI didn't store or print the password. Neo4j shows initial credentials only at creation, so you'll need to reset the password in the Aura console before you can log in."
+}

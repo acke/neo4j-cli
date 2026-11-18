@@ -1,0 +1,37 @@
+{
+ "task": "T1",
+ "run": 1,
+ "status": "ok",
+ "success": true,
+ "arm": "1614-parent",
+ "binary": "/tmp/swf-compare/bins/1614-parent",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "bd4603712d96458426cdcc1df27c4cc8a8ad54c3c5125688b1c6512b1c793a6c",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 2940,
+ "seconds": 8.3,
+ "turns": 4,
+ "bash_calls": 3,
+ "cost_usd": 0.0134809,
+ "tokens": {
+  "input_tokens": 8,
+  "output_tokens": 304,
+  "cache_read_input_tokens": 17499,
+  "cache_creation_input_tokens": 3470
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli --help",
+  "neo4j-cli credential --help",
+  "neo4j-cli credential dbms list --format toon"
+ ],
+ "final": "There is one stored DBMS credential, named **`bench-db`**. I found it with `neo4j-cli credential dbms list`.\n\n| Field | Value |\n|---|---|\n| name | `bench-db` |\n| uri | `neo4j://localhost:7687` |\n| username | `neo4j` |\n| database_name | `neo4j` |\n| default | true |\n\nIt has no embed credential attached."
+}

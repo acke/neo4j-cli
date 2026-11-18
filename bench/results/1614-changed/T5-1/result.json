@@ -1,0 +1,36 @@
+{
+ "task": "T5",
+ "run": 1,
+ "status": "ok",
+ "success": true,
+ "arm": "1614-changed",
+ "binary": "/tmp/swf-compare/bins/1614-changed",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "d0ae07519fcc69bac7f639b31e6cb64a426fa545c5ad2747a5137b574da99465",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 3027,
+ "seconds": 8.0,
+ "turns": 3,
+ "bash_calls": 2,
+ "cost_usd": 0.011664699999999998,
+ "tokens": {
+  "input_tokens": 6,
+  "output_tokens": 207,
+  "cache_read_input_tokens": 11777,
+  "cache_creation_input_tokens": 3362
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli aura instance --help",
+  "neo4j-cli aura instance snapshot --help"
+ ],
+ "final": "create\ndelete\ndeploy\nload\noverwrite\npause\nresume\nupdate\nsnapshot create"
+}

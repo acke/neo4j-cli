@@ -1,0 +1,36 @@
+{
+ "task": "T9",
+ "run": 1,
+ "status": "ok",
+ "success": true,
+ "arm": "1614-parent",
+ "binary": "/tmp/swf-compare/bins/1614-parent",
+ "binary_version": "neo4j-cli version dev",
+ "binary_sha256": "bd4603712d96458426cdcc1df27c4cc8a8ad54c3c5125688b1c6512b1c793a6c",
+ "binary_sha_matches_pin": null,
+ "tool_output_bytes": 5564,
+ "seconds": 106.0,
+ "turns": 3,
+ "bash_calls": 2,
+ "cost_usd": 0.016068100000000002,
+ "tokens": {
+  "input_tokens": 6,
+  "output_tokens": 404,
+  "cache_read_input_tokens": 12836,
+  "cache_creation_input_tokens": 4293
+ },
+ "session_init": {
+  "tools": [
+   "Bash"
+  ],
+  "mcp_servers": [],
+  "skills": [],
+  "slash_commands": [],
+  "model": "claude-sonnet-5-5"
+ },
+ "commands": [
+  "neo4j-cli aura instance create --help",
+  "neo4j-cli aura instance create --rw --name bench-t9-1 --type free --wait --no-credential-print --no-credential-storage --format json"
+ ],
+ "final": "The free Aura instance **bench-t9-1** is running. Its instance ID is **746b9b30**.\n\n- **Cloud and region:** GCP, europe-west1\n- **Size:** 1GB memory, 2GB storage\n- **Connection URL:** `neo4j+s://746b9b30-devcliswf.databases.neo4j-dev.io`\n\nI created it in your default project (`a63be88d-0d38-4054-ae5b-0e55f1483ea3`). I didn't print or store the password. You'll need to reset it in the Aura console before you can log in."
+}
