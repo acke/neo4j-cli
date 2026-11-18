@@ -44,7 +44,7 @@ T7 needs Docker running and `docker pull neo4j:community` done first. T8 to T10 
 
 ## Baseline
 
-`neo4j-cli` v1.19.0, model `claude-sonnet-5-5`, Claude Code 2.1.311, protocol `swf-bench-protocol/2`, 3 runs per task, 2026-11-17. Three runs are a smoke baseline. Medians; `python3 -I bench/report.py` prints p25 and p75 too.
+`neo4j-cli` v1.19.0, model `claude-sonnet-5-5`, Claude Code 2.1.311, protocol `swf-bench-protocol/2` (T1 to T10, 2026-11-17) and `/3` (T11, 2026-11-18), 3 runs per task. Three runs are a smoke baseline. Medians; `python3 -I bench/report.py` prints p25 and p75 too.
 
 | Task | Success | Turns | Tool output (bytes) | Cost (USD) |
 | --- | --- | --- | --- | --- |
@@ -58,5 +58,6 @@ T7 needs Docker running and `docker pull neo4j:community` done first. T8 to T10 
 | T8 | 3/3 | 5 | 5626 | 0.0163 |
 | T9 | 3/3 | 5 | 8630 | 0.0209 |
 | T10 | 3/3 | 5 | 2593 | 0.0157 |
+| T11 | 3/3 | 5 | 3722 | 0.0164 |
 
 T3 fails 2 of 3 because the error names the rejected value but not the valid ones. The run that passed guessed a valid value after reading help. The protocol `/1` baseline (T1 to T6 on 2026-11-16) had T3 at 0 of 3.
