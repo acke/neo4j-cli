@@ -6,6 +6,7 @@ Agent benchmark for `neo4j-cli`. Each task gives a headless Claude Code session 
 python3 -I bench/run.py <task> <run>                          # T1..T11, writes bench/results/<task>-<run>/
 python3 -I bench/run.py <task> <run> --bin PATH --arm LABEL   # same task on another build, writes bench/results/<arm>/<task>-<run>/
 python3 -I bench/report.py                                    # one row per arm and task, p25/median/p75
+python3 -I bench/card_cost.py <session_id> [--split NAME=ISO]  # cost block of a card record from a session transcript; dollars are a floor
 ```
 
 Each run writes `stream.jsonl` (full transcript) and `result.json` (success, tokens, turns, commands, cost, `tool_output_bytes`, binary version and SHA-256).
