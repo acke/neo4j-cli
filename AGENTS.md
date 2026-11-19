@@ -271,6 +271,10 @@ Pilot work happens in the fork until it is proposed upstream. A checkout has two
 
 `/agent-backlog-autopilot` (`.claude/skills/agent-backlog-autopilot/SKILL.md`) works one card from team `DEVSURF`, project `P-DEVSURF-2322`, state `Agent Backlog`, excluding label `Review Task`. It runs to a merged PR or a handback in one run. The human flips ready. The agent may squash-merge, except diffs touching authentication, `go.mod`/`go.sum`, CI/tooling or agent rules, which go to a human. Every run ends with a `swf-card-record/1` comment on the card, written before cleanup. The skill holds the full contract.
 
+### Stellar review tools
+
+`.agents/skills/stellar-review/tools/` holds the deterministic core of the stellar review (Python 3.10+ stdlib, no model calls, no network): `facts.py` (changed Go files, `func`/`type` units with content hashes, diff hunks → `.stellar/facts.json`), `ledger.py` (`scope` and `update`; per-PR ledger of unit hashes and finding lifecycles), `incremental.py` (anchoring diff that survives rebases and force-pushes). A unit is in scope only if it differs from both the merge base and the ledger, so a rebase never widens a round; an unreachable `last_head` yields no incremental patch, never a full re-review. Tests are not part of `make test`: `python3 -m unittest discover -s .agents/skills/stellar-review/tools/tests`.
+
 ### Larger features
 
 A feature that splits into several nodes or spans several PRs goes through the `gbuild` plugin (`oskarhane/oskars.ai`), not one hand-rolled branch. Small changes use a single branch directly.
