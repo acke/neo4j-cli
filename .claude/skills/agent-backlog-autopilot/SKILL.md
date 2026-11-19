@@ -2,7 +2,7 @@
 name: agent-backlog-autopilot
 description: |
   WHEN: deliberately invoked to work the DEVSURF agent backlog — one card, driven end to end, one human gate (the ready flip)
-  WHAT: pick one card from team DEVSURF, project P-DEVSURF-2322, state Agent Backlog → claim → worktree off fork/main → green draft PR on acke/neo4j-cli (≤5 rounds) → human marks ready → green CI + current-head bot verdicts (≤5 rounds) → agent squash merge (never on auth/deps/CI/agent-rules diffs) → Linear Done verified → cleanup
+  WHAT: pick one card from team DEVSURF, project P-DEVSURF-2322, state Agent Backlog, not labelled Review Task → claim → worktree off fork/main → green draft PR on acke/neo4j-cli (≤5 rounds) → human marks ready → green CI + current-head bot verdicts (≤5 rounds) → agent squash merge (never on auth/deps/CI/agent-rules diffs) → Linear Done verified → cleanup
   WHEN NOT: a task you already chose (just do it); multi-PR features (gbuild); anything needing interactive human judgment mid-run; upstream neo4j-labs/neo4j-cli work
 disable-model-invocation: true
 ---
@@ -27,7 +27,7 @@ Stop and report, without touching Linear or git, if any of these fail:
 
 ## Step 1 — pick one card (read-only)
 
-Scope: team `DEVSURF`, project `P-DEVSURF-2322`, state `Agent Backlog`. Order by priority, then oldest first. Pick ONE card that is:
+Scope: team `DEVSURF`, project `P-DEVSURF-2322`, state `Agent Backlog`, excluding label `Review Task`. Cards labelled `Review Task` belong to a future night-shift that cannot see `agent-backlog/*` branches, so picking one could work the same card twice. There is no fallback pool: until a night-shift exists, those cards wait. Order by priority, then oldest first. Pick ONE card that is:
 
 - **Small and concrete.** One package or a few tightly related files, with acceptance criteria you can test. A card that spans several command trees, needs an ADR-level decision, or splits into several PRs is gbuild work. Note that in a comment on the card and pick the next one.
 - **Not in flight.** All of these must hold:
@@ -40,7 +40,7 @@ Scope: team `DEVSURF`, project `P-DEVSURF-2322`, state `Agent Backlog`. Order by
 
 Judge a card against `fork/main`, never the local checkout, which can be behind. Run `git fetch fork` first, and read code with `git show fork/main:<path>` or `git grep <pattern> fork/main`. A scope claim such as "flag X does not exist" is only valid when checked there.
 
-If nothing qualifies, stop and say so. Never manufacture work. When a card the operator named is rejected here, comment the reason on it and post the card record with `outcome: nothing_to_pick`. Leave the card's state and assignee alone.
+If nothing qualifies, stop and say so. Never manufacture work. When a card the operator named is rejected here (including one outside `Agent Backlog` or labelled `Review Task`), comment the reason on it and post the card record with `outcome: nothing_to_pick`. Leave the card's state and assignee alone.
 
 ## Step 2 — claim it
 
@@ -111,7 +111,7 @@ Otherwise:
 
 - Don't merge, don't flip ready back to draft, and don't open another round.
 - Commit and push anything uncommitted first, so the PR shows the real state.
-- Comment on the card: what was done, what remains, the exact blocker, links. Unassign it and move it back to the state it was picked from (`Agent Backlog`, or `Backlog` while that state doesn't exist) so it can be picked again. A card that was never claimed stays as it is.
+- Comment on the card: what was done, what remains, the exact blocker, links. Unassign it and move it back to the state it was picked from (`Agent Backlog`) so it can be picked again. A card that was never claimed stays as it is.
 - If the branch carries reusable progress, keep the branch and PR open and say so on the card. Otherwise close the PR and delete the branch.
 - Notify the human in the invoking session. The handback ends the run.
 
@@ -121,7 +121,7 @@ Post one comment on the card holding a fenced JSON block, schema `swf-card-recor
 
 - `schema`, `card`, `outcome` (`merged`, `carve-out`, `handed_back`, `nothing_to_pick`), `pr`, `pr_head`, `merge_commit`.
 - `session_id`: this session's ID. One fresh session per card.
-- `timestamps_utc`: `card_created`, `agent_backlog_at`, `pr_opened`, `review_workflows_started`, `merged`.
+- `timestamps_utc`: `card_created`, `agent_backlog_at` (from the card's state history), `pr_opened`, `review_workflows_started`, `merged`.
 - `throughput_minutes`: `active`, `human_wait` (the ready-flip wait and any other wait on the human), `created_to_merged`.
 - `cost`: tokens, tool calls and seconds per phase (implementation, draft rounds, ready rounds, reviews), failed attempts, and `dollars_computed` with `price_basis` (`API list price`). Run `python3 -I bench/card_cost.py <session_id> --split <phase>=<ISO UTC>` (one `--split` per phase start) and paste its numbers; don't hand-compute. Output tokens and dollars are a floor, because transcripts store a streaming snapshot of output tokens; keep `output_tokens_lower_bound` in the block. Subagent usage counts only when their transcripts sit under the session; the output says how many it found.
 - `human_interventions`: `sanctioned_gates` (the ready flip), `phase_approvals`, `unplanned`, and `raw` (`manual_commits`, `human_review_comments`, `review_rounds`).
