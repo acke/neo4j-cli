@@ -47,3 +47,5 @@ test-api/
 
 # macOS Finder metadata
 .DS_Store
+# stellar-review runtime state (docs/stellar-review-round-1.md)
+.stellar/
