@@ -252,7 +252,7 @@ Pilot work happens in the fork until it is proposed upstream. A checkout has two
 - **One concern per PR, one squashed commit.** Fix rounds go into that commit: `git commit --amend` while unpushed, otherwise re-squash onto fresh `fork/main`. After any re-squash, `git diff fork/main HEAD --name-only` must list exactly the intended files. A foreign file means a revert of `main`'s work: abort before pushing. A missing file means a dropped fix.
 - **Rebase, never merge.** Branches stay linear. `git merge <base>` into a branch breaks stacked PRs.
 - **Stage explicit paths.** `git add -A` in a worktree can pick up nested worktree gitlinks.
-- **Open every PR as a draft, against `acke/neo4j-cli:main`.** The conventions and security review workflows skip drafts and start on `ready_for_review`. A human marks the PR ready; agents never do.
+- **Open every PR as a draft, against `acke/neo4j-cli:main`.** The conventions and security review workflows skip drafts and start on `ready_for_review`. A human marks the PR ready; agents never do. One exception: night-shift PRs (`nightshift/*` branches, opened by `.github/workflows/swf-nightshift.yml`) are regular PRs, so the review workflows run on them. Who merges them is `nightshift.merge` in `.swf/swf.yml` (`human` by default).
 - **PR title** is a conventional-commit subject matching the squashed commit. **PR body** describes the final squashed diff, lists what verification actually ran, and is re-checked after every re-squash.
 
 ### Before every push

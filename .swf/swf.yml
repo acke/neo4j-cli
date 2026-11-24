@@ -61,6 +61,7 @@ nightshift: # config only; the workflow is DEVSURF-1648 (N3)
   window: "03:00-07:00 Europe/Berlin"
   model: fireworks-ai/accounts/fireworks/routers/glm-fast-latest
   clusters_per_night: 1
+  merge: human # human | auto. Who merges a night-shift PR.
 
 limits:
   weekly_cost_eur: 1000
