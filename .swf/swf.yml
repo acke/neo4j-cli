@@ -1,0 +1,69 @@
+schema: swf-config/1
+
+repo:
+  slug: acke/neo4j-cli
+  base_branch: main
+  language: go
+  push_remote: fork
+  pr_repo: acke/neo4j-cli
+
+tracker:
+  kind: linear
+  team: DEVSURF
+  project: neo4j-cli software factory (swf)
+  pick_state: Agent Backlog
+  claim_state: In Progress
+  done_state: Done
+  review_label: Review Task # deferred findings; reserved for night-shift
+
+merge:
+  ready_flip: human
+  mode: agent
+  carve_out:
+    - .github/
+    - .claude/
+    - .agents/
+    - .swf/
+    - AGENTS.md
+    - CLAUDE.md
+    - go.mod
+    - go.sum
+    - Makefile
+    - .golangci.yml
+    - .goreleaser.yaml
+    - internal/auraclient/transport/
+    - internal/clicfg/credentials/
+  max_rounds:
+    draft: 5
+    ready: 5
+
+gates:
+  local:
+    - make test
+    - make fmt-check
+    - make lint
+  merge_compiles: true
+  merge_compile: go build ./... && go vet ./...
+
+review:
+  engine: stellar
+  security: false # claude-review-security already covers the security lens
+  model: fireworks-ai/accounts/fireworks/routers/glm-fast-latest
+
+tools:
+  gbuild: 0.13.1
+  stellar_review: 0.1.2
+  relate: 1.0.1
+  opencode: 2.3.0
+
+nightshift: # config only; the workflow is DEVSURF-1648 (N3)
+  enabled: true
+  window: "03:00-07:00 Europe/Berlin"
+  model: fireworks-ai/accounts/fireworks/routers/glm-fast-latest
+  clusters_per_night: 1
+
+limits:
+  weekly_cost_eur: 1000
+  max_unplanned_interventions: 1
+
+card_record: true

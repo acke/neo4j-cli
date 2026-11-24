@@ -229,6 +229,8 @@ _This AGENTS.md was generated using agent-based project discovery._
 
 Hand-maintained. Lives outside the generated block above; regeneration must not touch it.
 
+The factory's settings live in `.swf/swf.yml`: ready flip, merge mode, carve-out paths, round budgets, local gates, review lenses, tracker and night-shift. Read the config for current values; this section does not repeat them. A full local stellar round (`stellar-prep.sh local`) is the mandatory gate before every push; `--quick` is only a mid-work pre-filter, never a substitute.
+
 ### Remotes (pilot in the fork)
 
 Pilot work happens in the fork until it is proposed upstream. A checkout has two remotes:
