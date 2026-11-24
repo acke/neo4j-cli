@@ -269,7 +269,7 @@ Pilot work happens in the fork until it is proposed upstream. A checkout has two
 
 ### Agent backlog
 
-`/agent-backlog-autopilot` (`.claude/skills/agent-backlog-autopilot/SKILL.md`) works one card from team `DEVSURF`, project `P-DEVSURF-2322`, state `Agent Backlog`, excluding label `Review Task`. It runs to a merged PR or a handback in one run. The human flips ready. The agent may squash-merge, except diffs touching authentication, `go.mod`/`go.sum`, CI/tooling or agent rules, which go to a human. Every run ends with a `swf-card-record/1` comment on the card, written before cleanup. The skill holds the full contract.
+`/agent-backlog-autopilot` (`.claude/skills/agent-backlog-autopilot/SKILL.md`) works one card from team `DEVSURF`, project `P-DEVSURF-2322`, state `Agent Backlog`, excluding label `Review Task`. It runs to a merged PR or a handback in one run. The human flips ready. The agent may squash-merge, except diffs touching authentication, `go.mod`/`go.sum`, CI/tooling or agent rules, which go to a human. Every run ends with a `swf-card-record/1` comment on the card, written before cleanup. The skill holds the full contract. Without Linear MCP, the skill falls back to the GraphQL API with `LINEAR_API_KEY`, read from the gitignored repo-root `.env` (`export $(grep -v '^#' .env | xargs)`).
 
 ### Larger features
 
