@@ -63,6 +63,13 @@
     ]
   },
   {
+    "id": "T12",
+    "prompt": "Using neo4j-cli's own machine-readable discovery output (`neo4j-cli agent-context`, not source code or the internet), list the `config` subcommands that are read-only, meaning they never change state. Reply with the subcommand names only.",
+    "mustRun": [
+      "agent-context"
+    ]
+  },
+  {
     "id": "T13",
     "aura": true,
     "prompt": "Using neo4j-cli, tell me the instance ID of the Aura instance that deleting the one named bench-t13-{run} in my default workspace would remove. Do not delete anything."

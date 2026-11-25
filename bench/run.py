@@ -27,6 +27,7 @@ TASKS = {t["id"]: t for t in json.load(open(os.path.join(ROOT, "tasks.json")))}
 AURA = H["aura"]
 T10 = {}  # id of the instance the T10 setup creates
 T13 = {}  # id of the instance the T13 setup creates
+T12 = {}  # read-only and write `config` subcommand names the T12 setup takes from agent-context
 T11_CREDS = {"bench-alpha": "neo4j://alpha.bench:7687", "bench-beta": "neo4j://beta.bench:7688", "bench-gamma": "neo4j://gamma.bench:7689"}
 AURA_VARS = ("AURA_CLIENT_ID", "AURA_CLIENT_SECRET")
 
@@ -107,6 +108,33 @@ def remove_bench_instances(home):
     sys.exit("the dev workspace still holds instances after cleanup")
 
 
+def run_or_exit(what, argv, **kw):
+    """stdout of `argv`, or exit with its stderr."""
+    r = subprocess.run(argv, capture_output=True, text=True, **kw)
+    if r.returncode:
+        sys.exit(f"could not {what}: {r.stderr.strip()[:300]}")
+    return r.stdout
+
+
+def config_subcommand_modes():
+    """Read-only and write subcommand names of `config` per `agent-context config` of a fresh build of this working tree.
+    The pinned release and the parent arm predate the read_only marker, so the answer key can't come from BIN."""
+    tmp = tempfile.mkdtemp(prefix="swf-t12-")
+    try:
+        exe = os.path.join(tmp, "neo4j-cli")
+        run_or_exit("build the CLI for the T12 answer key", ["go", "build", "-o", exe, "./cmd/neo4j-cli"], cwd=os.path.dirname(ROOT))
+        out = run_or_exit("read agent-context for the T12 answer key", [exe, "agent-context", "config", "--format", "json"], env=dict(os.environ, HOME=tmp))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    kids = {c["path"].split()[1]: c["read_only"] for c in json.loads(out)["subcommands"] if len(c["path"].split()) == 2}
+    read, write = {n for n, ro in kids.items() if ro}, {n for n, ro in kids.items() if not ro}
+    if not read or not write:
+        sys.exit(f"agent-context has no read-only/write split for `config`: read-only {sorted(read)}, write {sorted(write)}")
+    if any(answer_words(n) != {n} for n in read | write):
+        sys.exit(f"a `config` subcommand name would not survive answer_words, so no answer could match it: {sorted(read | write)}")
+    return read, write
+
+
 def setup(task, home):
     os.makedirs(home, exist_ok=True)
     cli(home, "config", "set", "credential-storage", "insecure", "--rw")
@@ -124,6 +152,8 @@ def setup(task, home):
         if r.returncode:
             sys.exit(f"could not create the T10 instance: {r.stderr.strip()[:300]}")
         T10["id"] = named_instance(home, f"bench-t10-{ARGS.run}")["id"]
+    if task == "T12":
+        T12["read"], T12["write"] = config_subcommand_modes()
     if task == "T13":
         r = cli(home, "aura", "instance", "create", "--type", "free", "--name", f"bench-t13-{ARGS.run}", "--wait",
                 "--no-credential-print", "--no-credential-storage", "--rw")
@@ -189,10 +219,20 @@ def check_t4(home, bash, final):
     return os.path.isdir(d) and any(f == "SKILL.md" for _, _, fs in os.walk(d) for f in fs)
 
 
+def answer_words(final):
+    return set(re.findall(r"[a-z]+", final.lower()))
+
+
 def check_t5(home, bash, final):
     need = {"create", "delete", "deploy", "load", "overwrite", "pause", "resume", "update"}
-    words = set(re.findall(r"[a-z]+", final.lower()))
+    words = answer_words(final)
     return need <= words and not ({"get", "list"} & words)
+
+
+def check_t12(home, bash, final):
+    """Names exactly the read-only `config` subcommands and none of the write ones, per the key setup() derived."""
+    words = answer_words(final)
+    return T12["read"] <= words and not (T12["write"] & words)
 
 
 def check_t6(home, bash, final):
@@ -251,7 +291,7 @@ def check_t13(home, bash, final):
 
 
 STATE_CHECKS = {"T2": check_t2, "T3": check_t3, "T4": check_t4, "T5": check_t5, "T6": check_t6, "T7": check_t7,
-                "T9": check_t9, "T10": check_t10, "T11": check_t11, "T13": check_t13}
+                "T9": check_t9, "T10": check_t10, "T11": check_t11, "T12": check_t12, "T13": check_t13}
 
 
 def check(task, home, bash, results, final):
