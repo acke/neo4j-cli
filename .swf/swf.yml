@@ -55,13 +55,17 @@ tools:
   stellar_review: 0.1.2
   relate: 1.0.1
   opencode: 2.3.0
+  nightshift: 0.4.0
 
-nightshift: # config only; the workflow is DEVSURF-1648 (N3)
+nightshift:
   enabled: true
   window: "03:00-07:00 Europe/Berlin"
   model: fireworks-ai/accounts/fireworks/routers/glm-fast-latest
   clusters_per_night: 1
   merge: human # human | auto. Who merges a night-shift PR.
+  gates: # run by the fix job before it emits a patch
+    - make fmt-check
+    - make lint
 
 limits:
   weekly_cost_eur: 1000
