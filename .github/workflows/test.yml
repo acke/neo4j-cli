@@ -14,7 +14,10 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, windows-latest, macos-latest]
+                # Fork only: hosted macOS runners are often never assigned, and
+                # a job cancelled in the queue fails the PR (continue-on-error
+                # does not cover it). macOS runs on push to main there instead.
+                os: ${{ fromJSON(github.event_name == 'pull_request' && github.repository != 'neo4j-labs/neo4j-cli' && '["ubuntu-latest","windows-latest"]' || '["ubuntu-latest","windows-latest","macos-latest"]') }}
         runs-on: ${{ matrix.os }}
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
